@@ -75,12 +75,12 @@ namespace Game1
                 b = new Boll(new Rectangle(f.Bredd / 2 - 10, f.Höjd / 2 - 10, 20, 20));
                 lpad = new Rectangle(5, f.Höjd / 2 - 70, 20, 140);
                 rpad = new Rectangle(f.Bredd - 25, f.Höjd / 2 - 70, 20, 140);
-                b.X = slump.Next(1, 3);
+                b.X = slump.Next(1, 7);
                 if (slump.Next(1, 3) == 1)
                 {
                     b.X *= -1;
                 }
-                b.Y = slump.Next(1, 3);
+                b.Y = slump.Next(0, 3);
                 if (slump.Next(1, 3) == 1)
                 {
                     b.Y *= -1;
@@ -125,11 +125,30 @@ namespace Game1
             {
                 b.X *= -1;
                 int s = slump.Next(1, 11);
-                if (s < 3)
+                if (s < 5 && b.X >= 2)
                 {
-
+                    b.X--;
+                }
+                else if (s > 5 && b.Y <= 20)
+                {
+                    b.X++;
                 }
             }
+
+            Rectangle tillf = b.Rek;
+            tillf.X += b.X;
+            if (tillf.Y < 0)
+            {
+                tillf.Y = 0;
+                b.Y *= -1;
+            }
+            else if (tillf.Y > f.Höjd - 20)
+            {
+                tillf.Y = f.Höjd-20;
+                b.Y *= -1;
+            }
+            tillf.Y += b.Y;
+            b.Rek = tillf;
             
 
                 // TODO: Add your update logic here
@@ -147,7 +166,7 @@ namespace Game1
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
-            spriteBatch.Draw(pixel, boll, Color.White);
+            spriteBatch.Draw(pixel, b.Rek, Color.White);
             spriteBatch.Draw(pixel, rpad, Color.White);
             spriteBatch.Draw(pixel, lpad, Color.White);
             spriteBatch.End();
